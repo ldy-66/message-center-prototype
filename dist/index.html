@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Customer端与Trader端消息中心交互原型">
+  <title>消息中心双端原型</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="主导航">
+      <div class="brand">
+        <div class="brand-mark">N</div>
+        <div><strong>NEXUS</strong><span>TRADING</span></div>
+      </div>
+      <nav class="side-nav">
+        <button class="nav-item" aria-label="工作台"><span data-icon="grid"></span><span>工作台</span></button>
+        <button class="nav-item" aria-label="交易"><span data-icon="chart"></span><span>交易</span></button>
+        <button class="nav-item" aria-label="订单"><span data-icon="orders"></span><span>订单</span></button>
+        <button class="nav-item active" aria-current="page" aria-label="消息中心"><span data-icon="bell"></span><span>消息中心</span><b class="nav-badge" id="sideUnread">6</b></button>
+        <button class="nav-item" aria-label="账户"><span data-icon="wallet"></span><span>账户</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="market-state"><i></i><span>交易服务正常</span></div>
+        <button class="nav-item compact"><span data-icon="help"></span><span>帮助</span></button>
+      </div>
+    </aside>
+
+    <main class="workspace">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow" id="workspaceLabel">CUSTOMER WORKSPACE</div>
+          <h1>消息中心</h1>
+        </div>
+        <div class="top-actions">
+          <div class="role-switch" role="group" aria-label="原型端切换">
+            <button class="role-option active" data-role="customer">Customer端</button>
+            <button class="role-option" data-role="trader">Trader端</button>
+          </div>
+          <button class="icon-button" id="openSettings" aria-label="消息设置" title="消息设置"><span data-icon="settings"></span></button>
+          <div class="user-chip"><div class="avatar">Z</div><div><strong id="userName">张明</strong><span id="userRole">Customer</span></div></div>
+        </div>
+      </header>
+
+      <section class="summary-grid" id="summaryGrid" aria-label="消息概览"></section>
+
+      <section class="message-card">
+        <div class="message-toolbar">
+          <div class="category-tabs" id="categoryTabs" role="tablist"></div>
+          <div class="toolbar-actions">
+            <label class="search-box"><span data-icon="search"></span><input id="searchInput" type="search" placeholder="搜索标题、订单号或账户"></label>
+            <button class="ghost-button" id="markAllRead"><span data-icon="check"></span>全部已读</button>
+          </div>
+        </div>
+
+        <div class="trader-controls" id="traderControls" hidden>
+          <div class="quick-filters" id="quickFilters"></div>
+          <div class="view-actions">
+            <label>视图</label>
+            <select id="savedView">
+              <option value="all">全部消息</option>
+              <option value="pending">待处理订单</option>
+              <option value="exception">异常与失败</option>
+            </select>
+            <button class="text-button" id="saveView">保存当前视图</button>
+          </div>
+        </div>
+
+        <div class="message-layout">
+          <section class="message-list-panel" aria-label="消息列表">
+            <div class="list-heading"><span id="listCount">0 条消息</span><button class="icon-button small" id="refreshList" aria-label="刷新"><span data-icon="refresh"></span></button></div>
+            <div class="message-list" id="messageList"></div>
+            <div class="empty-state" id="emptyState" hidden>
+              <span data-icon="inbox"></span><strong>暂无匹配消息</strong><p>调整筛选条件或搜索关键词后再试</p>
+            </div>
+          </section>
+
+          <article class="detail-panel" id="detailPanel" aria-live="polite"></article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="drawer-backdrop" id="settingsBackdrop" hidden></div>
+  <aside class="settings-drawer" id="settingsDrawer" aria-label="消息设置" aria-hidden="true">
+    <div class="drawer-header">
+      <div><span class="eyebrow">NOTIFICATION PREFERENCES</span><h2>消息设置</h2></div>
+      <button class="icon-button" id="closeSettings" aria-label="关闭"><span data-icon="close"></span></button>
+    </div>
+    <p class="drawer-intro">关闭“启用”后，该类型不再进入消息中心；关闭“弹窗”后，消息仍会保留在消息中心。</p>
+    <div class="setting-legend"><span>消息类型</span><span>启用</span><span>弹窗</span></div>
+    <div class="setting-list" id="settingList"></div>
+    <div class="drawer-footer"><button class="ghost-button" id="resetSettings">恢复默认</button><button class="primary-button" id="saveSettings">保存设置</button></div>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"><span data-icon="checkCircle"></span><div><strong>设置已保存</strong><p>新配置已立即生效</p></div></div>
+  <script src="app.js"></script>
+</body>
+</html>
